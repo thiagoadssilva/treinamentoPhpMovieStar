@@ -18,6 +18,8 @@
   
   #main-navbar {
     background-color: #121212;
+    padding-left: 15px;
+    padding-right: 15px;
   }
   
   #search-form {

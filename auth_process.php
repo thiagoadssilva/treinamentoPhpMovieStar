@@ -48,5 +48,14 @@ if($type === "register"){
     }
 
 }elseif($type === "login"){
+    $email = filter_input(INPUT_POST, "email");
+    $password = filter_input(INPUT_POST, "password");
 
+    if($userDao->authenticateUser($email, $password)){
+        $message->setMessage("Seja bem-vindo", "success", "editprofile.php");    
+    }else{
+        $message->setMessage("Usurário e/ou senha icorretos", "error", "back");                
+    }
+}else{
+    $message->setMessage("Informações iválidas", "error", "index.php");                
 }
