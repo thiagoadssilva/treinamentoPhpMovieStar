@@ -41,7 +41,7 @@ if ($userData->image == "") {
         <div class="col-md-4">
           <div id="profile-image-container" style="background-image: url('<?= $BASE_URL ?>img/users/<?= $userData->image ?>')"></div>
           <div class="form-group">
-            <label for="image" style="margin-bottom: 10px; margin-top: 10px;">Foto:</label>
+            <label for="image" style="margin-bottom: 10px; margin-top: 10px;">Foto:</label><br>
             <input type="file" class="form-control-file" name="image">
           </div>
           <div class="form-group">
