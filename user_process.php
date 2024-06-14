@@ -27,24 +27,24 @@ if ($type === "update") {
     $userData->bio = $bio;
 
     // Trabalhando com imagem:
-    if(isset($_FILES["image"]) && !empty($_FILES["image"]["tmp_name"])){
+    if (isset($_FILES["image"]) && !empty($_FILES["image"]["tmp_name"])) {
 
         $image = $_FILES["image"];
         $imageTypes = ["image/jpg", "image/jpeg", "image/png",];
         $jpgArray = ["image/jpg", "image/jpeg"];
 
-        if(in_array($image["type"], $imageTypes)){
+        if (in_array($image["type"], $imageTypes)) {
 
-            if(in_array($image["type"], $jpgArray)){
+            if (in_array($image["type"], $jpgArray)) {
                 $imageFile = imagecreatefromjpeg($image["tmp_name"]);
-            }else {
+            } else {
                 $imageFile = imagecreatefrompng($image["tmp_name"]);
             }
 
             $imageName = $user->imageGenerateName();
-            imagejpeg($imageFile, "./img/users/".$imageName, 100);
+            imagejpeg($imageFile, "./img/users/" . $imageName, 100);
             $userData->image = $imageName;
-        }else {
+        } else {
             $message->setMessage("Tipo de imagem inválida, por favor insira apenas (Jpg, Jpeg e Png)", "error", "back");
         }
     }
@@ -52,6 +52,23 @@ if ($type === "update") {
 
     $userDao->update($userData);
 } else if ($type === "changepassword") {
+    $password = filter_input(INPUT_POST, "password");
+    $confirmpassword = filter_input(INPUT_POST, "confirmpassword");
+
+    $userData = $userDao->verifyToken();
+    $id = $userData->id;
+
+    if ($password === $confirmpassword) {
+        $user = new User();
+
+        $finalPassword = $user->generatePassword($password);
+        $user->password = $finalPassword;
+        $user->id = $id;
+
+        $userDao->changePassword($user);
+    } else {
+        $message->setMessage("As senhas são diferentes!!", "error", "back");
+    }
 } else {
     $message->setMessage("Informações iválidas", "error", "index.php");
 }
